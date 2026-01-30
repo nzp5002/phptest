@@ -21,29 +21,30 @@
         body { background: var(--bg); color: var(--text); padding-bottom: 50px; }
 
         header { 
-            background: var(--card); 
-            padding: 25px; 
-            text-align: center; 
-            border-bottom: 2px solid var(--primary);
-            margin-bottom: 30px;
+            background: var(--card); padding: 25px; text-align: center; 
+            border-bottom: 2px solid var(--primary); margin-bottom: 30px;
         }
         header h1 { font-weight: 900; letter-spacing: 2px; font-size: 1.5rem; }
         header span { color: var(--primary); }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* BOX LOGIN */
-        .login-container { 
-            max-width: 400px; margin: 100px auto; background: var(--card); 
-            padding: 40px; border-radius: 20px; border: 1px solid var(--border); text-align: center;
+        /* FILTROS */
+        .filter-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: var(--card);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
         }
-        .login-container input { 
-            width: 100%; padding: 15px; margin: 10px 0; border-radius: 10px; 
-            border: 1px solid #333; background: #000; color: #fff; 
-        }
-        .btn-login { 
-            width: 100%; padding: 15px; background: var(--primary); color: #fff; 
-            border: none; border-radius: 10px; font-weight: 900; cursor: pointer; margin-top: 10px;
+        .filter-group { position: relative; display: flex; align-items: center; }
+        .filter-group i { position: absolute; left: 15px; color: var(--primary); }
+        .filter-group input, .filter-group select {
+            width: 100%; padding: 12px 12px 12px 40px; border-radius: 8px;
+            background: #000; border: 1px solid #333; color: #fff; outline: none;
         }
 
         /* ACTIONS BAR */
@@ -56,68 +57,69 @@
         .btn { 
             padding: 12px 18px; border-radius: 8px; border: none; font-weight: 700; 
             cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s;
-            font-size: 0.85rem;
         }
         .btn-pay-all { background: var(--success); color: #000; }
         .btn-del-all { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
-        .btn:hover { transform: translateY(-3px); opacity: 0.9; }
 
         /* TABLE */
-        .table-container { 
-            background: var(--card); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; 
-        }
+        .table-container { background: var(--card); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
         th { background: rgba(255,255,255,0.03); padding: 20px; text-align: left; color: var(--primary); font-size: 0.75rem; text-transform: uppercase; }
-        td { padding: 18px 20px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        td { padding: 18px 20px; border-bottom: 1px solid var(--border); }
         
         .status-badge { padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; }
         .status-pago { background: rgba(0, 230, 118, 0.15); color: var(--success); }
         .status-pendente { background: rgba(255, 59, 59, 0.15); color: var(--primary); }
 
-        .price-tag { font-weight: 900; font-size: 1rem; }
-        .price-accumulated { color: var(--primary); }
+        .btn-circle { width: 35px; height: 35px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .btn-circle-pay { background: var(--success); color: #000; }
+        .btn-circle-del { background: rgba(255,59,59,0.1); color: var(--primary); }
         
         .row-checkbox { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
 
-        .btn-circle { 
-            width: 35px; height: 35px; border-radius: 50%; border: none; 
-            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;
-        }
-        .btn-circle-pay { background: var(--success); color: #000; }
-        .btn-circle-del { background: rgba(255,59,59,0.1); color: var(--primary); }
-
-        .info-juros { font-size: 0.65rem; color: #888; display: block; margin-top: 4px; }
+        #loginSection { max-width: 400px; margin: 100px auto; background: var(--card); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--border); }
+        #loginSection input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 10px; background: #000; border: 1px solid #333; color: #fff; }
     </style>
 </head>
 <body>
 
-<div id="loginSection" class="login-container">
-    <i class="fas fa-lock" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
-    <h2>ACESSO ADMIN</h2>
+<div id="loginSection">
+    <i class="fas fa-user-shield" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
+    <h2>PAINEL RESTRITO</h2>
     <input type="text" id="user" placeholder="Usuário">
     <input type="text" id="cpf_admin" placeholder="CPF">
     <input type="password" id="pass" placeholder="Senha">
-    <button class="btn-login" onclick="fazerLogin()">AUTENTICAR <i class="fas fa-sign-in-alt"></i></button>
+    <button class="btn" style="width:100%; background:var(--primary); color:#fff; justify-content:center;" onclick="fazerLogin()">AUTENTICAR</button>
 </div>
 
 <div id="mainDashboard" style="display: none;">
-    <header>
-        <h1>BIO<span>ATHLETIC</span> | GESTÃO FINANCEIRA</h1>
-    </header>
+    <header><h1>BIO<span>ATHLETIC</span> | ADMIN</h1></header>
 
     <div class="container">
+        <div class="filter-bar">
+            <div class="filter-group">
+                <i class="fas fa-search"></i>
+                <input type="text" id="fNome" placeholder="Buscar aluno..." oninput="filtrar()">
+            </div>
+            <div class="filter-group">
+                <i class="fas fa-filter"></i>
+                <select id="fStatus" onchange="filtrar()">
+                    <option value="">Todos os Status</option>
+                    <option value="pago">Pagos</option>
+                    <option value="pendente">Pendentes</option>
+                </select>
+            </div>
+            <button class="btn" style="background:#222; color:#fff; justify-content:center;" onclick="resetFiltros()">
+                <i class="fas fa-undo"></i> LIMPAR
+            </button>
+        </div>
+
         <div class="actions-bar">
             <div class="batch-actions">
-                <button class="btn btn-pay-all" onclick="processarLote('pago')">
-                    <i class="fas fa-check-double"></i> QUITAR SELECIONADOS
-                </button>
-                <button class="btn btn-del-all" onclick="processarLote('excluir')">
-                    <i class="fas fa-trash-alt"></i> EXCLUIR
-                </button>
+                <button class="btn btn-pay-all" onclick="processarLote('pago')"><i class="fas fa-check-double"></i> QUITAR</button>
+                <button class="btn btn-del-all" onclick="processarLote('excluir')"><i class="fas fa-trash-alt"></i> EXCLUIR</button>
             </div>
-            <button class="btn" style="background: #222; color: #fff;" onclick="carregarDados()">
-                <i class="fas fa-sync"></i> ATUALIZAR
-            </button>
+            <div id="stats" style="font-size: 0.8rem; color: #888;"></div>
         </div>
 
         <div class="table-container">
@@ -125,15 +127,14 @@
                 <thead>
                     <tr>
                         <th width="40"><input type="checkbox" id="masterCheck" onclick="toggleAll()"></th>
-                        <th><i class="fas fa-user"></i> ALUNO</th>
-                        <th><i class="fas fa-calendar-alt"></i> MESES</th>
-                        <th><i class="fas fa-toggle-on"></i> STATUS</th>
-                        <th><i class="fas fa-money-bill-wave"></i> VALOR DEVIDO</th>
-                        <th text-align="center"><i class="fas fa-bolt"></i> AÇÕES</th>
+                        <th>ALUNO</th>
+                        <th>MESES</th>
+                        <th>STATUS</th>
+                        <th>TOTAL DEVIDO</th>
+                        <th style="text-align:center;">AÇÕES</th>
                     </tr>
                 </thead>
-                <tbody id="alunoLista">
-                    </tbody>
+                <tbody id="alunoLista"></tbody>
             </table>
         </div>
     </div>
@@ -141,7 +142,7 @@
 
 <script>
     const API_URL = 'https://apiphp-production-bce2.up.railway.app';
-    let ALUNOS_ATUAIS = [];
+    let DADOS_BRUTOS = [];
 
     async function fazerLogin() {
         const fd = new FormData();
@@ -156,74 +157,77 @@
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('mainDashboard').style.display = 'block';
             carregarDados();
-        } else {
-            alert("Acesso Negado!");
-        }
+        } else { alert("Acesso negado."); }
     }
 
     async function carregarDados() {
         const r = await fetch(`${API_URL}?action=listar_alunos`);
         const res = await r.json();
-        ALUNOS_ATUAIS = res.data;
-        renderizar();
+        DADOS_BRUTOS = res.data || [];
+        renderizar(DADOS_BRUTOS);
     }
 
-    function renderizar() {
+    function renderizar(listaParaExibir) {
         const lista = document.getElementById('alunoLista');
         lista.innerHTML = '';
-
-        ALUNOS_ATUAIS.forEach(aluno => {
+        
+        listaParaExibir.forEach(aluno => {
             const isPendente = aluno.status === 'pendente';
-            const meses = aluno.meses_total || 0; // Mês começando em 0
-
             lista.innerHTML += `
                 <tr>
                     <td><input type="checkbox" class="row-checkbox" data-cpf="${aluno.cpf}"></td>
                     <td>
-                        <strong style="font-size: 0.9rem;">${aluno.nome}</strong><br>
-                        <small style="color: #666; font-size: 0.7rem;">${aluno.cpf}</small>
+                        <strong>${aluno.nome}</strong><br>
+                        <small style="color:#666">${aluno.cpf}</small>
                     </td>
-                    <td><i class="far fa-calendar"></i> ${meses} meses</td>
+                    <td><i class="far fa-calendar-alt"></i> ${aluno.meses_total || 0} meses</td>
                     <td>
                         <span class="status-badge ${isPendente ? 'status-pendente' : 'status-pago'}">
-                            <i class="fas ${isPendente ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> 
-                            ${aluno.status.toUpperCase()}
+                            <i class="fas ${isPendente ? 'fa-clock' : 'fa-check'}"></i> ${aluno.status.toUpperCase()}
                         </span>
                     </td>
                     <td>
-                        <span class="price-tag ${isPendente ? 'price-accumulated' : ''}">
-                            R$ ${parseFloat(aluno.valor_total_devido).toFixed(2)}
-                        </span>
-                        <span class="info-juros">Base: R$ ${parseFloat(aluno.mensalidade_base).toFixed(2)}</span>
+                        <b style="color:${isPendente ? 'var(--primary)' : 'var(--success)'}">R$ ${parseFloat(aluno.valor_total_devido).toFixed(2)}</b>
                     </td>
                     <td>
-                        <div style="display: flex; gap: 8px; justify-content: center;">
-                            ${isPendente ? `
-                                <button class="btn-circle btn-circle-pay" onclick="alterarStatus('${aluno.cpf}', 'pago')" title="Marcar como Pago">
-                                    <i class="fas fa-hand-holding-usd"></i>
-                                </button>
-                            ` : ''}
-                            <button class="btn-circle btn-circle-del" onclick="deletar('${aluno.cpf}')" title="Excluir Aluno">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                        <div style="display:flex; gap:8px; justify-content:center;">
+                            ${isPendente ? `<button class="btn-circle btn-circle-pay" onclick="alterarStatus('${aluno.cpf}')"><i class="fas fa-dollar-sign"></i></button>` : ''}
+                            <button class="btn-circle btn-circle-del" onclick="deletar('${aluno.cpf}')"><i class="fas fa-trash"></i></button>
                         </div>
                     </td>
                 </tr>
             `;
         });
+        document.getElementById('stats').innerText = `${listaParaExibir.length} alunos encontrados`;
     }
 
-    async function alterarStatus(cpf, status) {
-        if(!confirm(`Mudar status para ${status.toUpperCase()}?`)) return;
+    function filtrar() {
+        const nome = document.getElementById('fNome').value.toLowerCase();
+        const status = document.getElementById('fStatus').value;
+        
+        const filtrados = DADOS_BRUTOS.filter(a => {
+            return a.nome.toLowerCase().includes(nome) && (status === '' || a.status === status);
+        });
+        renderizar(filtrados);
+    }
+
+    function resetFiltros() {
+        document.getElementById('fNome').value = '';
+        document.getElementById('fStatus').value = '';
+        renderizar(DADOS_BRUTOS);
+    }
+
+    async function alterarStatus(cpf) {
+        if(!confirm("Confirmar pagamento?")) return;
         const fd = new FormData();
         fd.append('cpf', cpf);
-        fd.append('novo_status', status);
+        fd.append('novo_status', 'pago');
         await fetch(`${API_URL}?action=atualizar_status`, { method: 'POST', body: fd });
         carregarDados();
     }
 
     async function deletar(cpf) {
-        if(!confirm("Excluir este aluno permanentemente?")) return;
+        if(!confirm("Excluir definitivamente?")) return;
         const fd = new FormData();
         fd.append('cpf', cpf);
         await fetch(`${API_URL}?action=apagar_aluno`, { method: 'POST', body: fd });
@@ -232,28 +236,25 @@
 
     async function processarLote(acao) {
         const selecionados = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.dataset.cpf);
-        if(selecionados.length === 0) return alert("Nenhum aluno selecionado!");
-
-        if(confirm(`Deseja aplicar ${acao} em ${selecionados.length} alunos?`)) {
-            for(let cpf of selecionados) {
-                const fd = new FormData();
-                fd.append('cpf', cpf);
-                if(acao === 'pago') {
-                    fd.append('novo_status', 'pago');
-                    await fetch(`${API_URL}?action=atualizar_status`, { method: 'POST', body: fd });
-                } else {
-                    await fetch(`${API_URL}?action=apagar_aluno`, { method: 'POST', body: fd });
-                }
+        if(!selecionados.length) return alert("Selecione alunos!");
+        
+        for(let cpf of selecionados) {
+            const fd = new FormData();
+            fd.append('cpf', cpf);
+            if(acao === 'pago') {
+                fd.append('novo_status', 'pago');
+                await fetch(`${API_URL}?action=atualizar_status`, { method: 'POST', body: fd });
+            } else {
+                await fetch(`${API_URL}?action=apagar_aluno`, { method: 'POST', body: fd });
             }
-            carregarDados();
         }
+        carregarDados();
     }
 
     function toggleAll() {
-        const master = document.getElementById('masterCheck');
-        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = master.checked);
+        const m = document.getElementById('masterCheck');
+        document.querySelectorAll('.row-checkbox').forEach(c => c.checked = m.checked);
     }
 </script>
-
 </body>
 </html>
