@@ -1,187 +1,244 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel Admin - BioAthletic</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
-<style>
-:root {
-    --primary: #FF3B3B;
-    --bg: #0A0A0A;
-    --card-bg: #161616;
-    --text: #FFF;
-    --hover: rgba(255,59,59,0.2);
-    --transition: all 0.3s ease;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - BioAthletic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #FF3B3B;
+            --primary-dark: #D32F2F;
+            --bg: #050505;
+            --card-bg: #111111;
+            --input-bg: #0A0A0A;
+            --text: #FFFFFF;
+            --text-dim: #A0A0A0;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border: rgba(255, 255, 255, 0.05);
+        }
 
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Montserrat', sans-serif; }
-body { background: var(--bg); color: var(--text); min-height: 100vh; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% -20%, #251010 0%, #050505 80%);
+        }
 
-header {
-    background: var(--card-bg);
-    text-align: center;
-    padding: 20px;
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: var(--primary);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
+        /* Scrollbar Personalizada */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--card-bg); border-radius: 10px; border: 2px solid var(--primary); }
 
-.container {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 15px;
-}
+        header {
+            background: rgba(17, 17, 17, 0.8);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 25px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header span { color: var(--primary); }
 
-/* LOGIN */
-.login-box {
-    background: var(--card-bg);
-    padding: 30px 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px var(--hover);
-    max-width: 400px;
-    margin: 0 auto 40px auto;
-    text-align: center;
-}
-.login-box h2 { margin-bottom: 20px; color: var(--primary); font-weight: 900; }
-.login-box input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    border: 1px solid #222;
-    background: #0f0f0f;
-    color: var(--text);
-    font-size: 1rem;
-    transition: var(--transition);
-}
-.login-box input:focus { border-color: var(--primary); outline:none; box-shadow:0 0 8px var(--primary);}
-.login-box button {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border:none;
-    font-weight: 700;
-    background: var(--primary);
-    color:#fff;
-    cursor:pointer;
-    transition: var(--transition);
-}
-.login-box button:hover { filter: brightness(1.2); }
-#loginStatus { margin-top: 10px; font-weight:600; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-/* PAINEL */
-.panel { display:none; background: var(--card-bg); padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px var(--hover); }
-.panel h2 { text-align:center; margin-bottom:20px; color: var(--primary); }
+        /* LOGIN CARD */
+        .login-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            max-width: 420px;
+            margin: 60px auto;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .login-box h2 { margin-bottom: 30px; font-weight: 800; font-size: 1.8rem; }
+        .login-box input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border: 1px solid #222;
+            background: var(--input-bg);
+            color: var(--text);
+            transition: var(--transition);
+        }
+        .login-box input:focus { border-color: var(--primary); outline: none; background: #000; }
+        .login-box button {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 800;
+            background: var(--primary);
+            color: #fff;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: var(--transition);
+            box-shadow: 0 10px 15px -3px rgba(255, 59, 59, 0.3);
+        }
+        .login-box button:hover { transform: translateY(-2px); filter: brightness(1.2); }
 
-/* FILTROS */
-.filter-group {
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-bottom:15px;
-}
-.filter-group input, .filter-group select, .filter-group button {
-    flex:1;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #222;
-    background:#0f0f0f;
-    color:#fff;
-    font-size:0.95rem;
-}
-.filter-group button {
-    flex:0 0 120px;
-    background: var(--primary);
-    font-weight:700;
-    border:none;
-    cursor:pointer;
-}
-.filter-group button:hover { filter: brightness(1.2); }
+        /* DASHBOARD PANEL */
+        .panel { 
+            display: none; 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 24px; 
+            border: 1px solid var(--border);
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-#btnApagarSelecionados {
-    padding:10px;
-    border-radius:10px;
-    background:#ff5555;
-    font-weight:700;
-    border:none;
-    cursor:pointer;
-    margin-bottom:10px;
-}
-#btnApagarSelecionados:hover { filter: brightness(1.2); }
+        .panel h2 { margin-bottom: 25px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .panel h2::before { content: ''; width: 5px; height: 25px; background: var(--primary); border-radius: 10px; }
 
-/* TABELA RESPONSIVA */
-.table-wrapper { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; min-width:600px; }
-th, td { padding:10px; text-align:left; border-bottom:1px solid #222; font-size:0.95rem; }
-th { background:#1a1a1a; font-weight:700; }
-tr:hover { background:#222; }
-.checkbox-cell { text-align:center; }
-.btnApagar {
-    padding:5px 10px;
-    border:none;
-    border-radius:8px;
-    background:#ff5555;
-    color:#fff;
-    cursor:pointer;
-    font-weight:600;
-    transition:0.3s;
-}
-.btnApagar:hover { filter: brightness(1.2); }
+        /* FILTROS MODERNOS */
+        .filter-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.02);
+            padding: 20px;
+            border-radius: 16px;
+        }
+        .filter-group input, .filter-group button {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: var(--input-bg);
+            color: #fff;
+            outline: none;
+        }
+        .filter-group button { 
+            background: #222; 
+            border: none; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: var(--transition);
+        }
+        .filter-group button#btnFiltrar { background: var(--primary); }
+        .filter-group button:hover { background: var(--text); color: #000; }
 
-/* RESPONSIVO */
-@media(max-width:768px){
-    .filter-group { flex-direction: column; }
-    .filter-group button { width: 100%; }
-    .login-box { padding:20px 15px; }
-}
-</style>
+        /* AÇÕES EM MASSA */
+        #btnApagarSelecionados {
+            padding: 12px 24px;
+            border-radius: 12px;
+            background: transparent;
+            color: #ff5555;
+            border: 1px solid #ff5555;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        #btnApagarSelecionados:hover { background: #ff5555; color: #fff; }
+
+        /* TABELA */
+        .table-wrapper { 
+            border-radius: 16px; 
+            overflow: hidden; 
+            border: 1px solid var(--border);
+        }
+        table { width: 100%; border-collapse: collapse; background: #111; }
+        th { 
+            background: #1a1a1a; 
+            padding: 18px; 
+            text-align: left; 
+            font-size: 0.85rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            color: var(--text-dim);
+        }
+        td { padding: 18px; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+        tr:last-child td { border: none; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        .btnApagar {
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 85, 85, 0.1);
+            color: #ff5555;
+            border: 1px solid #ff5555;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+        .btnApagar:hover { background: #ff5555; color: #fff; }
+
+        /* CHECKBOX CUSTOM */
+        input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        @media(max-width: 768px) {
+            .filter-group { grid-template-columns: 1fr; }
+            .container { margin: 20px auto; }
+            .panel { padding: 15px; }
+            td, th { padding: 12px; }
+        }
+    </style>
 </head>
 <body>
 
-<header>BioAthletic - Painel Administrativo</header>
+<header>Bio<span>Athletic</span> - Gestão Estratégica</header>
 
 <div class="container">
 
-    <!-- LOGIN -->
     <div class="login-box" id="loginBox">
-        <h2>Login do Administrador</h2>
-        <input type="text" id="adminNome" placeholder="Nome Completo">
+        <i class="fas fa-user-shield" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
+        <h2>Acesso Restrito</h2>
+        <input type="text" id="adminNome" placeholder="Usuário">
         <input type="text" id="adminCpf" placeholder="CPF">
-        <input type="password" id="adminSenha" placeholder="Senha">
-        <button id="btnLogin">Entrar</button>
+        <input type="password" id="adminSenha" placeholder="Senha de Acesso">
+        <button id="btnLogin">Autenticar Sistema</button>
         <div id="loginStatus"></div>
     </div>
 
-    <!-- PAINEL -->
     <div class="panel" id="adminPanel">
-        <h2>Gerenciar Alunos</h2>
+        <h2>Listagem de Alunos Ativos</h2>
 
         <div class="filter-group">
-            <input type="number" id="filterValor" placeholder="Filtrar por Mensalidade (R$)">
-            <input type="number" id="filterMeses" placeholder="Filtrar por meses na academia">
-            <button id="btnFiltrar">Filtrar</button>
-            <button id="btnLimparFiltro">Limpar Filtro</button>
+            <input type="number" id="filterValor" placeholder="Valor Mensalidade (R$)">
+            <input type="number" id="filterMeses" placeholder="Tempo (Meses)">
+            <button id="btnFiltrar"><i class="fas fa-filter"></i> Filtrar</button>
+            <button id="btnLimparFiltro"><i class="fas fa-redo"></i> Resetar</button>
         </div>
 
-        <button id="btnApagarSelecionados">Apagar Selecionados</button>
+        <button id="btnApagarSelecionados"><i class="fas fa-trash-alt"></i> Excluir Selecionados</button>
 
         <div class="table-wrapper">
             <table id="alunosTable">
                 <thead>
                     <tr>
-                        <th class="checkbox-cell"><input type="checkbox" id="selectAll"></th>
-                        <th>Nome</th>
+                        <th style="width: 50px;"><input type="checkbox" id="selectAll"></th>
+                        <th>Nome do Aluno</th>
                         <th>CPF</th>
-                        <th>Telefone</th>
-                        <th>Mensalidade (R$)</th>
-                        <th>Meses na Academia</th>
-                        <th>Ações</th>
+                        <th>Contato</th>
+                        <th>Mensalidade</th>
+                        <th>Permanência</th>
+                        <th>Gerenciar</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                    </tbody>
             </table>
         </div>
     </div>
@@ -189,126 +246,118 @@ tr:hover { background:#222; }
 </div>
 
 <script>
-const API_URL = 'https://apiphp-production-bce2.up.railway.app';
+    // Mantendo toda a sua lógica funcional original
+    const API_URL = 'https://apiphp-production-bce2.up.railway.app';
 
-// LOGIN
-document.getElementById('btnLogin').addEventListener('click', async () => {
-    const nome = document.getElementById('adminNome').value.trim();
-    const cpf = document.getElementById('adminCpf').value.trim();
-    const senha = document.getElementById('adminSenha').value;
+    document.getElementById('btnLogin').addEventListener('click', async () => {
+        const nome = document.getElementById('adminNome').value.trim();
+        const cpf = document.getElementById('adminCpf').value.trim();
+        const senha = document.getElementById('adminSenha').value;
 
-    if(!nome || !cpf || !senha) return alert('Preencha todos os campos');
+        if(!nome || !cpf || !senha) return alert('Por favor, preencha as credenciais.');
 
-    const fd = new FormData();
-    fd.append('nome', nome);
-    fd.append('cpf', cpf);
-    fd.append('senha', senha);
-
-    try {
-        const res = await fetch(`${API_URL}?action=login`, { method:'POST', body:fd });
-        const data = await res.json();
-        if(data.status==='success') {
-            document.getElementById('loginBox').style.display='none';
-            document.getElementById('adminPanel').style.display='block';
-            carregarAlunos();
-        } else {
-            document.getElementById('loginStatus').innerText='Login inválido';
-            document.getElementById('loginStatus').style.color='#ff5555';
-        }
-    } catch(err){
-        console.error(err);
-        alert('Erro ao conectar com a API');
-    }
-});
-
-// CARREGAR ALUNOS
-let alunosData = [];
-async function carregarAlunos(){
-    try{
-        const res = await fetch(`${API_URL}?action=listar_alunos`);
-        const data = await res.json();
-        alunosData = data.data || [];
-        renderTable(alunosData);
-    } catch(err){
-        console.error(err);
-        alert('Erro ao carregar alunos');
-    }
-}
-
-// RENDERIZAR TABELA
-function renderTable(data){
-    const tbody = document.querySelector('#alunosTable tbody');
-    tbody.innerHTML='';
-    data.forEach(aluno=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML=`
-            <td class="checkbox-cell"><input type="checkbox" class="selectAluno" data-cpf="${aluno.cpf}"></td>
-            <td>${aluno.nome}</td>
-            <td>${aluno.cpf}</td>
-            <td>${aluno.telefone}</td>
-            <td>${aluno.mensalidade.toFixed(2)}</td>
-            <td>${aluno.meses_na_academia}</td>
-            <td><button class="btnApagar" data-cpf="${aluno.cpf}">Apagar</button></td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-// APAGAR INDIVIDUAL
-document.addEventListener('click', async (e)=>{
-    if(e.target.classList.contains('btnApagar')){
-        if(!confirm('Deseja realmente apagar este aluno?')) return;
-        const cpf = e.target.dataset.cpf;
-        await apagarAlunos([cpf]);
-        carregarAlunos();
-    }
-});
-
-// SELECIONAR TODOS
-document.getElementById('selectAll').addEventListener('change', (e)=>{
-    document.querySelectorAll('.selectAluno').forEach(chk=>{
-        chk.checked = e.target.checked;
-    });
-});
-
-// APAGAR SELECIONADOS
-document.getElementById('btnApagarSelecionados').addEventListener('click', async ()=>{
-    const selecionados = Array.from(document.querySelectorAll('.selectAluno:checked')).map(chk=>chk.dataset.cpf);
-    if(selecionados.length===0) return alert('Nenhum aluno selecionado');
-    if(!confirm(`Deseja realmente apagar ${selecionados.length} aluno(s)?`)) return;
-    await apagarAlunos(selecionados);
-    carregarAlunos();
-});
-
-// FUNÇÃO APAGAR
-async function apagarAlunos(cpfs){
-    for(const cpf of cpfs){
         const fd = new FormData();
+        fd.append('nome', nome);
         fd.append('cpf', cpf);
+        fd.append('senha', senha);
+
+        try {
+            const res = await fetch(`${API_URL}?action=login`, { method:'POST', body:fd });
+            const data = await res.json();
+            if(data.status==='success') {
+                document.getElementById('loginBox').style.display='none';
+                document.getElementById('adminPanel').style.display='block';
+                carregarAlunos();
+            } else {
+                const status = document.getElementById('loginStatus');
+                status.innerText='Acesso negado: Credenciais inválidas';
+                status.style.color='#ff5555';
+            }
+        } catch(err){
+            alert('Falha na comunicação com o servidor.');
+        }
+    });
+
+    let alunosData = [];
+    async function carregarAlunos(){
         try{
-            await fetch(`${API_URL}?action=apagar_aluno`, { method:'POST', body:fd });
-        } catch(err){ console.error(err); }
+            const res = await fetch(`${API_URL}?action=listar_alunos`);
+            const data = await res.json();
+            alunosData = data.data || [];
+            renderTable(alunosData);
+        } catch(err){
+            alert('Erro ao sincronizar lista de alunos.');
+        }
     }
-}
 
-// FILTROS
-document.getElementById('btnFiltrar').addEventListener('click', ()=>{
-    const valor = parseFloat(document.getElementById('filterValor').value);
-    const meses = parseInt(document.getElementById('filterMeses').value);
-    let filtered = alunosData;
+    function renderTable(data){
+        const tbody = document.querySelector('#alunosTable tbody');
+        tbody.innerHTML='';
+        data.forEach(aluno=>{
+            const tr = document.createElement('tr');
+            tr.innerHTML=`
+                <td><input type="checkbox" class="selectAluno" data-cpf="${aluno.cpf}"></td>
+                <td style="font-weight:600">${aluno.nome}</td>
+                <td style="color:#888">${aluno.cpf}</td>
+                <td>${aluno.telefone}</td>
+                <td style="color:var(--primary); font-weight:700">R$ ${aluno.mensalidade.toFixed(2)}</td>
+                <td><span style="background:#222; padding:4px 10px; border-radius:20px; font-size:0.8rem">${aluno.meses_na_academia} meses</span></td>
+                <td><button class="btnApagar" data-cpf="${aluno.cpf}"><i class="fas fa-times"></i></button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
 
-    if(!isNaN(valor)) filtered = filtered.filter(a=>a.mensalidade===valor);
-    if(!isNaN(meses)) filtered = filtered.filter(a=>a.meses_na_academia===meses);
+    document.addEventListener('click', async (e)=>{
+        const btn = e.target.closest('.btnApagar');
+        if(btn){
+            if(!confirm('Confirmar exclusão permanente?')) return;
+            const cpf = btn.dataset.cpf;
+            await apagarAlunos([cpf]);
+            carregarAlunos();
+        }
+    });
 
-    renderTable(filtered);
-});
+    document.getElementById('selectAll').addEventListener('change', (e)=>{
+        document.querySelectorAll('.selectAluno').forEach(chk=>{
+            chk.checked = e.target.checked;
+        });
+    });
 
-// LIMPAR FILTRO
-document.getElementById('btnLimparFiltro').addEventListener('click', ()=>{
-    document.getElementById('filterValor').value='';
-    document.getElementById('filterMeses').value='';
-    renderTable(alunosData);
-});
+    document.getElementById('btnApagarSelecionados').addEventListener('click', async ()=>{
+        const selecionados = Array.from(document.querySelectorAll('.selectAluno:checked')).map(chk=>chk.dataset.cpf);
+        if(selecionados.length===0) return alert('Selecione ao menos um registro.');
+        if(!confirm(`Excluir permanentemente ${selecionados.length} registro(s)?`)) return;
+        await apagarAlunos(selecionados);
+        carregarAlunos();
+    });
+
+    async function apagarAlunos(cpfs){
+        for(const cpf of cpfs){
+            const fd = new FormData();
+            fd.append('cpf', cpf);
+            try{
+                await fetch(`${API_URL}?action=apagar_aluno`, { method:'POST', body:fd });
+            } catch(err){ console.error(err); }
+        }
+    }
+
+    document.getElementById('btnFiltrar').addEventListener('click', ()=>{
+        const valor = parseFloat(document.getElementById('filterValor').value);
+        const meses = parseInt(document.getElementById('filterMeses').value);
+        let filtered = alunosData;
+
+        if(!isNaN(valor)) filtered = filtered.filter(a=>a.mensalidade===valor);
+        if(!isNaN(meses)) filtered = filtered.filter(a=>a.meses_na_academia===meses);
+
+        renderTable(filtered);
+    });
+
+    document.getElementById('btnLimparFiltro').addEventListener('click', ()=>{
+        document.getElementById('filterValor').value='';
+        document.getElementById('filterMeses').value='';
+        renderTable(alunosData);
+    });
 </script>
 
 </body>
