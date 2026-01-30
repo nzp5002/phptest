@@ -3,123 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin BioAthletic - Gestão Financeira</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>Admin BioAthletic - Gestão Elite</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #FF3B3B;
-            --success: #00E676;
-            --bg: #0A0A0A;
-            --card: #161616;
-            --text: #FFFFFF;
-            --border: rgba(255, 255, 255, 0.05);
+            --primary: #FF3B3B; --success: #00E676; --bg: #0A0A0A;
+            --card: #161616; --text: #FFFFFF; --border: rgba(255, 255, 255, 0.05);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
         body { background: var(--bg); color: var(--text); padding-bottom: 50px; }
-
-        header { 
-            background: var(--card); padding: 25px; text-align: center; 
-            border-bottom: 2px solid var(--primary); margin-bottom: 30px;
-        }
-        header h1 { font-weight: 900; letter-spacing: 2px; font-size: 1.5rem; }
+        header { background: var(--card); padding: 25px; text-align: center; border-bottom: 2px solid var(--primary); margin-bottom: 30px; }
         header span { color: var(--primary); }
-
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* FILTROS */
+        /* GRID DE FILTROS COMPLETO */
         .filter-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            background: var(--card);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px; background: var(--card); padding: 20px; border-radius: 15px;
+            margin-bottom: 20px; border: 1px solid var(--border);
         }
         .filter-group { position: relative; display: flex; align-items: center; }
-        .filter-group i { position: absolute; left: 15px; color: var(--primary); }
+        .filter-group i { position: absolute; left: 15px; color: var(--primary); font-size: 0.8rem; }
         .filter-group input, .filter-group select {
             width: 100%; padding: 12px 12px 12px 40px; border-radius: 8px;
-            background: #000; border: 1px solid #333; color: #fff; outline: none;
+            background: #000; border: 1px solid #333; color: #fff; outline: none; font-size: 0.8rem;
         }
 
-        /* ACTIONS BAR */
-        .actions-bar { 
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 20px; flex-wrap: wrap; gap: 15px;
-        }
-        .batch-actions { display: flex; gap: 10px; }
-        
-        .btn { 
-            padding: 12px 18px; border-radius: 8px; border: none; font-weight: 700; 
-            cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s;
-        }
-        .btn-pay-all { background: var(--success); color: #000; }
-        .btn-del-all { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
-
-        /* TABLE */
+        /* TABELA */
         .table-container { background: var(--card); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
-        th { background: rgba(255,255,255,0.03); padding: 20px; text-align: left; color: var(--primary); font-size: 0.75rem; text-transform: uppercase; }
+        th { background: rgba(255,255,255,0.03); padding: 20px; text-align: left; color: var(--primary); font-size: 0.7rem; text-transform: uppercase; }
         td { padding: 18px 20px; border-bottom: 1px solid var(--border); }
         
-        .status-badge { padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; }
-        .status-pago { background: rgba(0, 230, 118, 0.15); color: var(--success); }
-        .status-pendente { background: rgba(255, 59, 59, 0.15); color: var(--primary); }
+        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; }
+        .status-pago { background: rgba(0, 230, 118, 0.1); color: var(--success); }
+        .status-pendente { background: rgba(255, 59, 59, 0.1); color: var(--primary); }
 
-        .btn-circle { width: 35px; height: 35px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .juros-info { font-size: 0.65rem; color: #ff9800; display: block; margin-top: 5px; font-weight: bold; }
+        
+        .btn-circle { width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .btn-circle-pay { background: var(--success); color: #000; }
         .btn-circle-del { background: rgba(255,59,59,0.1); color: var(--primary); }
         
-        .row-checkbox { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
-
-        #loginSection { max-width: 400px; margin: 100px auto; background: var(--card); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--border); }
-        #loginSection input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 10px; background: #000; border: 1px solid #333; color: #fff; }
+        #loginSection { max-width: 400px; margin: 100px auto; background: var(--card); padding: 40px; border-radius: 24px; text-align: center; border: 1px solid var(--border); }
+        #loginSection input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; background: #000; border: 1px solid #333; color: #fff; }
     </style>
 </head>
 <body>
 
 <div id="loginSection">
-    <i class="fas fa-user-shield" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
-    <h2>PAINEL RESTRITO</h2>
+    <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
+    <h2>BIOATHLETIC ADMIN</h2>
     <input type="text" id="user" placeholder="Usuário">
     <input type="text" id="cpf_admin" placeholder="CPF">
     <input type="password" id="pass" placeholder="Senha">
-    <button class="btn" style="width:100%; background:var(--primary); color:#fff; justify-content:center;" onclick="fazerLogin()">AUTENTICAR</button>
+    <button onclick="fazerLogin()" style="width:100%; padding:15px; background:var(--primary); color:#fff; border:none; border-radius:12px; font-weight:900; cursor:pointer;">ENTRAR</button>
 </div>
 
 <div id="mainDashboard" style="display: none;">
-    <header><h1>BIO<span>ATHLETIC</span> | ADMIN</h1></header>
+    <header><h1>BIO<span>ATHLETIC</span> | GESTÃO</h1></header>
 
     <div class="container">
         <div class="filter-bar">
             <div class="filter-group">
                 <i class="fas fa-search"></i>
-                <input type="text" id="fNome" placeholder="Buscar aluno..." oninput="filtrar()">
+                <input type="text" id="fNome" placeholder="Nome do aluno..." oninput="filtrar()">
             </div>
             <div class="filter-group">
-                <i class="fas fa-filter"></i>
+                <i class="fas fa-dollar-sign"></i>
+                <input type="number" id="fValor" placeholder="Valor exato..." oninput="filtrar()">
+            </div>
+            <div class="filter-group">
+                <i class="fas fa-calendar-day"></i>
+                <input type="number" id="fMeses" placeholder="Meses exatos..." oninput="filtrar()">
+            </div>
+            <div class="filter-group">
+                <i class="fas fa-check-double"></i>
                 <select id="fStatus" onchange="filtrar()">
-                    <option value="">Todos os Status</option>
+                    <option value="">Todos Status</option>
                     <option value="pago">Pagos</option>
                     <option value="pendente">Pendentes</option>
                 </select>
             </div>
-            <button class="btn" style="background:#222; color:#fff; justify-content:center;" onclick="resetFiltros()">
-                <i class="fas fa-undo"></i> LIMPAR
-            </button>
+            <button onclick="resetFiltros()" style="background:#222; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">LIMPAR</button>
         </div>
 
-        <div class="actions-bar">
-            <div class="batch-actions">
-                <button class="btn btn-pay-all" onclick="processarLote('pago')"><i class="fas fa-check-double"></i> QUITAR</button>
-                <button class="btn btn-del-all" onclick="processarLote('excluir')"><i class="fas fa-trash-alt"></i> EXCLUIR</button>
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+            <div style="display:flex; gap:10px;">
+                <button onclick="processarLote('pago')" style="padding:10px 20px; background:var(--success); border:none; border-radius:8px; font-weight:bold; cursor:pointer;"><i class="fas fa-check"></i> PAGAR SELECIONADOS</button>
+                <button onclick="processarLote('excluir')" style="padding:10px 20px; background:transparent; border:1px solid var(--primary); color:var(--primary); border-radius:8px; font-weight:bold; cursor:pointer;"><i class="fas fa-trash"></i> EXCLUIR</button>
             </div>
-            <div id="stats" style="font-size: 0.8rem; color: #888;"></div>
+            <div id="stats"></div>
         </div>
 
         <div class="table-container">
@@ -128,6 +103,7 @@
                     <tr>
                         <th width="40"><input type="checkbox" id="masterCheck" onclick="toggleAll()"></th>
                         <th>ALUNO</th>
+                        <th>CONTATO</th>
                         <th>MESES</th>
                         <th>STATUS</th>
                         <th>TOTAL DEVIDO</th>
@@ -149,15 +125,13 @@
         fd.append('nome', document.getElementById('user').value);
         fd.append('cpf', document.getElementById('cpf_admin').value);
         fd.append('senha', document.getElementById('pass').value);
-
         const r = await fetch(`${API_URL}?action=login`, { method: 'POST', body: fd });
         const res = await r.json();
-
         if(res.status === 'success') {
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('mainDashboard').style.display = 'block';
             carregarDados();
-        } else { alert("Acesso negado."); }
+        } else { alert("Dados incorretos."); }
     }
 
     async function carregarDados() {
@@ -167,24 +141,22 @@
         renderizar(DADOS_BRUTOS);
     }
 
-    function renderizar(listaParaExibir) {
-        const lista = document.getElementById('alunoLista');
-        lista.innerHTML = '';
-        
-        listaParaExibir.forEach(aluno => {
+    function renderizar(lista) {
+        const corpo = document.getElementById('alunoLista');
+        corpo.innerHTML = '';
+        lista.forEach(aluno => {
             const isPendente = aluno.status === 'pendente';
-            lista.innerHTML += `
+            corpo.innerHTML += `
                 <tr>
                     <td><input type="checkbox" class="row-checkbox" data-cpf="${aluno.cpf}"></td>
-                    <td>
-                        <strong>${aluno.nome}</strong><br>
-                        <small style="color:#666">${aluno.cpf}</small>
-                    </td>
-                    <td><i class="far fa-calendar-alt"></i> ${aluno.meses_total || 0} meses</td>
+                    <td><strong>${aluno.nome}</strong><br><small style="color:#666">${aluno.cpf}</small></td>
+                    <td><small>${aluno.telefone}</small></td>
+                    <td>${aluno.meses_total} m</td>
                     <td>
                         <span class="status-badge ${isPendente ? 'status-pendente' : 'status-pago'}">
-                            <i class="fas ${isPendente ? 'fa-clock' : 'fa-check'}"></i> ${aluno.status.toUpperCase()}
+                            <i class="fas ${isPendente ? 'fa-exclamation-triangle' : 'fa-check'}"></i> ${aluno.status.toUpperCase()}
                         </span>
+                        ${aluno.juros_ativo ? `<span class="juros-info"><i class="fas fa-percent"></i> Juros: ${aluno.juros_valor}%</span>` : ''}
                     </td>
                     <td>
                         <b style="color:${isPendente ? 'var(--primary)' : 'var(--success)'}">R$ ${parseFloat(aluno.valor_total_devido).toFixed(2)}</b>
@@ -198,27 +170,32 @@
                 </tr>
             `;
         });
-        document.getElementById('stats').innerText = `${listaParaExibir.length} alunos encontrados`;
+        document.getElementById('stats').innerText = `${lista.length} Alunos`;
     }
 
     function filtrar() {
         const nome = document.getElementById('fNome').value.toLowerCase();
+        const valor = document.getElementById('fValor').value;
+        const meses = document.getElementById('fMeses').value;
         const status = document.getElementById('fStatus').value;
-        
+
         const filtrados = DADOS_BRUTOS.filter(a => {
-            return a.nome.toLowerCase().includes(nome) && (status === '' || a.status === status);
+            const mNome = a.nome.toLowerCase().includes(nome);
+            const mValor = valor === '' || parseFloat(a.mensalidade_base) == valor;
+            const mMeses = meses === '' || parseInt(a.meses_total) == meses;
+            const mStatus = status === '' || a.status === status;
+            return mNome && mValor && mMeses && mStatus;
         });
         renderizar(filtrados);
     }
 
     function resetFiltros() {
-        document.getElementById('fNome').value = '';
-        document.getElementById('fStatus').value = '';
+        ["fNome", "fValor", "fMeses", "fStatus"].forEach(id => document.getElementById(id).value = '');
         renderizar(DADOS_BRUTOS);
     }
 
     async function alterarStatus(cpf) {
-        if(!confirm("Confirmar pagamento?")) return;
+        if(!confirm("Marcar como pago?")) return;
         const fd = new FormData();
         fd.append('cpf', cpf);
         fd.append('novo_status', 'pago');
@@ -227,7 +204,7 @@
     }
 
     async function deletar(cpf) {
-        if(!confirm("Excluir definitivamente?")) return;
+        if(!confirm("Excluir aluno?")) return;
         const fd = new FormData();
         fd.append('cpf', cpf);
         await fetch(`${API_URL}?action=apagar_aluno`, { method: 'POST', body: fd });
@@ -236,8 +213,7 @@
 
     async function processarLote(acao) {
         const selecionados = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.dataset.cpf);
-        if(!selecionados.length) return alert("Selecione alunos!");
-        
+        if(!selecionados.length) return alert("Selecione alguém!");
         for(let cpf of selecionados) {
             const fd = new FormData();
             fd.append('cpf', cpf);
