@@ -233,7 +233,7 @@
         document.querySelectorAll('.plan-card').forEach(card => observeCards.observe(card));
 
         // --- ENVIO DO FORMULÁRIO ---
-        const API_URL = 'https://apiphp-production-bce2.up.railway.app/index.php';
+        const API_URL = 'https://apiphp-production-bce2.up.railway.app';
 
         document.getElementById('formMatricula').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -250,10 +250,9 @@
 
             try {
                 const r = await fetch(`${API_URL}?action=cadastrar_aluno`, {
-                    method: 'POST',
-                    body: fd,
-                    headers: { 'ngrok-skip-browser-warning': 'true' }
-                });
+                 method: 'POST',
+                 body: fd
+               });
 
                 if (!r.ok) {
                      throw new Error('HTTP ' + r.status);
