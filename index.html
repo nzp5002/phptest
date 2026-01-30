@@ -255,6 +255,9 @@
                     headers: { 'ngrok-skip-browser-warning': 'true' }
                 });
 
+                if (!r.ok) {
+                     throw new Error('HTTP ' + r.status);
+                 }
                 const res = await r.json();
                 if (res.status === 'success') {
                     status.innerText = '✅ SUCESSO! BEM-VINDO AO TIME.';
