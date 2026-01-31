@@ -1,356 +1,233 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin - BioAthletic</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --primary: #FF3B3B;
-            --primary-dark: #D32F2F;
-            --bg: #050505;
-            --card-bg: #111111;
-            --input-bg: #0A0A0A;
-            --text: #FFFFFF;
-            --text-dim: #A0A0A0;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --border: rgba(255, 255, 255, 0.05);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioAthletic | Administração</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-        
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            min-height: 100vh;
-            background-image: radial-gradient(circle at 50% -20%, #251010 0%, #050505 80%);
-        }
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        header {
-            background: rgba(17, 17, 17, 0.8);
-            backdrop-filter: blur(10px);
-            text-align: center;
-            padding: 25px;
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        header span { color: var(--primary); }
+<style>
+:root {
+    --primary:#ff3b3b;
+    --success:#00e676;
+    --bg:#0a0a0a;
+    --card:#161616;
+    --border:rgba(255,255,255,.06);
+    --text:#fff;
+}
 
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+* { box-sizing:border-box; font-family:Montserrat,sans-serif }
+body { margin:0; background:var(--bg); color:var(--text); }
 
-        /* LOGIN CARD */
-        .login-box {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            max-width: 420px;
-            margin: 60px auto;
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .login-box h2 { margin-bottom: 30px; font-weight: 800; font-size: 1.8rem; }
-        .login-box input {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 12px;
-            border: 1px solid #222;
-            background: var(--input-bg);
-            color: var(--text);
-            transition: var(--transition);
-        }
-        .login-box input:focus { border-color: var(--primary); outline: none; background: #000; }
-        .login-box button {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 800;
-            background: var(--primary);
-            color: #fff;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: var(--transition);
-        }
+header {
+    padding:25px;
+    text-align:center;
+    background:var(--card);
+    border-bottom:2px solid var(--primary);
+}
+header span { color:var(--primary) }
 
-        /* DASHBOARD PANEL */
-        .panel { 
-            display: none; 
-            background: var(--card-bg); 
-            padding: 30px; 
-            border-radius: 24px; 
-            border: 1px solid var(--border);
-            animation: fadeIn 0.5s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.container { max-width:1200px; margin:auto; padding:20px }
 
-        .panel h2 { margin-bottom: 25px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
-        .panel h2::before { content: ''; width: 5px; height: 25px; background: var(--primary); border-radius: 10px; }
+.filter-bar {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+    background:var(--card);
+    padding:20px;
+    border-radius:16px;
+    border:1px solid var(--border);
+    margin-bottom:20px;
+}
+.filter-bar input, .filter-bar select {
+    width:100%;
+    padding:12px;
+    background:#000;
+    border:1px solid #333;
+    border-radius:10px;
+    color:#fff;
+}
 
-        /* FILTROS MODERNOS */
-        .filter-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-            background: rgba(255,255,255,0.02);
-            padding: 20px;
-            border-radius: 16px;
-        }
+.actions {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+    gap:10px;
+}
 
-        .input-with-icon {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-        .input-with-icon i {
-            position: absolute;
-            left: 15px;
-            color: var(--primary);
-            font-size: 0.9rem;
-        }
-        .input-with-icon input {
-            width: 100%;
-            padding: 12px 15px 12px 40px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            background: var(--input-bg);
-            color: #fff;
-            outline: none;
-            transition: var(--transition);
-        }
-        .input-with-icon input:focus { border-color: var(--primary); }
+.actions button {
+    padding:10px 20px;
+    border-radius:10px;
+    font-weight:800;
+    border:none;
+    cursor:pointer;
+}
+.btn-pay { background:var(--success) }
+.btn-del { background:transparent; border:1px solid var(--primary); color:var(--primary) }
 
-        .filter-group button { 
-            padding: 12px;
-            border-radius: 10px;
-            background: #222; 
-            border: none; 
-            color: white;
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: var(--transition);
-        }
-        .filter-group button#btnFiltrar { background: var(--primary); }
-        .filter-group button:hover { transform: translateY(-2px); filter: brightness(1.2); }
+.table-box {
+    background:var(--card);
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid var(--border);
+}
 
-        /* TABELA */
-        .table-wrapper { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
-        table { width: 100%; border-collapse: collapse; background: #111; }
-        th { background: #1a1a1a; padding: 18px; text-align: left; font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; }
-        td { padding: 18px; border-bottom: 1px solid var(--border); }
-        tr:hover td { background: rgba(255,255,255,0.02); }
+table { width:100%; border-collapse:collapse }
+th, td { padding:16px; text-align:left }
+th { color:var(--primary); font-size:.7rem; text-transform:uppercase }
+tr:not(:last-child) td { border-bottom:1px solid var(--border) }
 
-        .btnApagar {
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: rgba(255, 85, 85, 0.1);
-            color: #ff5555;
-            border: 1px solid #ff5555;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btnApagar:hover { background: #ff5555; color: #fff; }
+.status {
+    padding:4px 10px;
+    border-radius:6px;
+    font-size:.65rem;
+    font-weight:800;
+}
+.pago { background:rgba(0,230,118,.15); color:var(--success) }
+.pendente { background:rgba(255,59,59,.15); color:var(--primary) }
 
-        #btnApagarSelecionados {
-            padding: 12px 24px;
-            border-radius: 12px;
-            background: transparent;
-            color: #ff5555;
-            border: 1px solid #ff5555;
-            font-weight: 700;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
+.circle {
+    width:32px; height:32px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    border:none;
+}
+.circle.pay { background:var(--success) }
+.circle.del { background:rgba(255,59,59,.15); color:var(--primary) }
 
-        @media(max-width: 768px) {
-            .filter-group { grid-template-columns: 1fr; }
-        }
-    </style>
+@media(max-width:700px){
+    table { font-size:.8rem }
+}
+</style>
 </head>
+
 <body>
 
-<header>Bio<span>Athletic</span> - Gestão Estratégica</header>
+<header>
+    <h1>BIO<span>ATHLETIC</span> | ADMIN</h1>
+</header>
 
 <div class="container">
 
-    <div class="login-box" id="loginBox">
-        <i class="fas fa-user-shield" style="font-size: 3rem; color: var(--primary); margin-bottom: 20px;"></i>
-        <h2>Acesso Restrito</h2>
-        <input type="text" id="adminNome" placeholder="Usuário">
-        <input type="text" id="adminCpf" placeholder="CPF">
-        <input type="password" id="adminSenha" placeholder="Senha de Acesso">
-        <button id="btnLogin">Autenticar Sistema</button>
-        <div id="loginStatus" style="margin-top:15px"></div>
+    <!-- FILTROS -->
+    <div class="filter-bar">
+        <input id="fNome" placeholder="Nome do aluno" oninput="filtrar()">
+        <input id="fValor" type="number" placeholder="Mensalidade" oninput="filtrar()">
+        <input id="fMeses" type="number" placeholder="Meses" oninput="filtrar()">
+        <select id="fStatus" onchange="filtrar()">
+            <option value="">Todos</option>
+            <option value="pago">Pago</option>
+            <option value="pendente">Pendente</option>
+        </select>
     </div>
 
-    <div class="panel" id="adminPanel">
-        <h2>Listagem de Alunos Ativos</h2>
-
-        <div class="filter-group">
-            <div class="input-with-icon">
-                <i class="fas fa-search"></i>
-                <input type="text" id="filterNome" placeholder="Buscar por nome...">
-            </div>
-            <div class="input-with-icon">
-                <i class="fas fa-dollar-sign"></i>
-                <input type="number" id="filterValor" placeholder="Mensalidade (R$)">
-            </div>
-            <div class="input-with-icon">
-                <i class="fas fa-calendar-alt"></i>
-                <input type="number" id="filterMeses" placeholder="Tempo (Meses)">
-            </div>
-            <button id="btnFiltrar"><i class="fas fa-filter"></i> Filtrar</button>
-            <button id="btnLimparFiltro"><i class="fas fa-redo"></i> Resetar</button>
+    <!-- AÇÕES -->
+    <div class="actions">
+        <div>
+            <button class="btn-pay" onclick="acaoLote('pago')">
+                <i class="fas fa-check"></i> Marcar Pago
+            </button>
+            <button class="btn-del" onclick="acaoLote('excluir')">
+                <i class="fas fa-trash"></i> Excluir
+            </button>
         </div>
-
-        <button id="btnApagarSelecionados"><i class="fas fa-trash-alt"></i> Excluir Selecionados</button>
-
-        <div class="table-wrapper">
-            <table id="alunosTable">
-                <thead>
-                    <tr>
-                        <th style="width: 50px;"><input type="checkbox" id="selectAll"></th>
-                        <th>Nome do Aluno</th>
-                        <th>CPF</th>
-                        <th>Contato</th>
-                        <th>Mensalidade</th>
-                        <th>Permanência</th>
-                        <th>Gerenciar</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+        <strong id="stats"></strong>
     </div>
+
+    <!-- TABELA -->
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" onclick="toggleAll(this)"></th>
+                    <th>Aluno</th>
+                    <th>Contato</th>
+                    <th>Meses</th>
+                    <th>Status</th>
+                    <th>Total Devido</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+        </table>
+    </div>
+
 </div>
 
 <script>
-    const API_URL = 'https://apiphp-production-bce2.up.railway.app';
-    let alunosData = [];
+const API = "https://apiphp-production-bce2.up.railway.app";
+let DADOS = [];
 
-    // LOGIN
-    document.getElementById('btnLogin').addEventListener('click', async () => {
-        const nome = document.getElementById('adminNome').value.trim();
-        const cpf = document.getElementById('adminCpf').value.trim();
-        const senha = document.getElementById('adminSenha').value;
+async function carregar() {
+    const r = await fetch(API+"?action=listar_alunos");
+    const j = await r.json();
+    DADOS = j.data || [];
+    render(DADOS);
+}
+carregar();
 
-        const fd = new FormData();
-        fd.append('nome', nome);
-        fd.append('cpf', cpf);
-        fd.append('senha', senha);
-
-        try {
-            const res = await fetch(`${API_URL}?action=login`, { method:'POST', body:fd });
-            const data = await res.json();
-            if(data.status==='success') {
-                document.getElementById('loginBox').style.display='none';
-                document.getElementById('adminPanel').style.display='block';
-                carregarAlunos();
-            } else {
-                const status = document.getElementById('loginStatus');
-                status.innerText='Credenciais inválidas';
-                status.style.color='#ff5555';
-            }
-        } catch(err){ alert('Erro ao conectar com API.'); }
+function render(lista){
+    const tb = document.getElementById("lista");
+    tb.innerHTML = "";
+    lista.forEach(a=>{
+        tb.innerHTML += `
+        <tr>
+            <td><input type="checkbox" data-cpf="${a.cpf}"></td>
+            <td><b>${a.nome}</b><br><small>${a.cpf}</small></td>
+            <td>${a.telefone}</td>
+            <td>${a.meses_total}</td>
+            <td><span class="status ${a.status}">${a.status.toUpperCase()}</span></td>
+            <td>R$ ${a.valor_total_devido.toFixed(2)}</td>
+            <td>
+                ${a.status=="pendente"?
+                `<button class="circle pay" onclick="pagar('${a.cpf}')"><i class="fas fa-dollar-sign"></i></button>`:""}
+                <button class="circle del" onclick="excluir('${a.cpf}')"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>`;
     });
+    document.getElementById("stats").innerText = lista.length+" alunos";
+}
 
-    // CARREGAR DADOS
-    async function carregarAlunos(){
-        try{
-            const res = await fetch(`${API_URL}?action=listar_alunos`);
-            const data = await res.json();
-            alunosData = data.data || [];
-            renderTable(alunosData);
-        } catch(err){ console.error('Erro ao carregar alunos'); }
-    }
+function filtrar(){
+    const n=fNome.value.toLowerCase(),
+          v=fValor.value,
+          m=fMeses.value,
+          s=fStatus.value;
+    render(DADOS.filter(a=>
+        a.nome.toLowerCase().includes(n) &&
+        (!v || a.mensalidade_base==v) &&
+        (!m || a.meses_total==m) &&
+        (!s || a.status==s)
+    ));
+}
 
-    // RENDERIZAR TABELA
-    function renderTable(data){
-        const tbody = document.querySelector('#alunosTable tbody');
-        tbody.innerHTML='';
-        data.forEach(aluno=>{
-            const tr = document.createElement('tr');
-            tr.innerHTML=`
-                <td><input type="checkbox" class="selectAluno" data-cpf="${aluno.cpf}"></td>
-                <td style="font-weight:600">${aluno.nome}</td>
-                <td style="color:#666">${aluno.cpf}</td>
-                <td>${aluno.telefone}</td>
-                <td style="color:var(--primary); font-weight:700">R$ ${parseFloat(aluno.mensalidade).toFixed(2)}</td>
-                <td><span style="background:#222; padding:4px 10px; border-radius:20px; font-size:0.8rem">${aluno.meses_na_academia} meses</span></td>
-                <td><button class="btnApagar" data-cpf="${aluno.cpf}"><i class="fas fa-trash"></i></button></td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
+async function pagar(cpf){
+    await fetch(API+"?action=atualizar_status",{method:"POST",body:new FormData(Object.assign(document.createElement("form"),{cpf,novo_status:"pago"}))});
+    carregar();
+}
 
-    // LÓGICA DE FILTROS
-    function aplicarFiltros() {
-        const nomeBusca = document.getElementById('filterNome').value.toLowerCase().trim();
-        const valor = parseFloat(document.getElementById('filterValor').value);
-        const meses = parseInt(document.getElementById('filterMeses').value);
-        
-        let filtered = alunosData.filter(aluno => {
-            const matchNome = aluno.nome.toLowerCase().includes(nomeBusca);
-            const matchValor = isNaN(valor) || parseFloat(aluno.mensalidade) === valor;
-            const matchMeses = isNaN(meses) || parseInt(aluno.meses_na_academia) === meses;
-            return matchNome && matchValor && matchMeses;
-        });
+async function excluir(cpf){
+    if(!confirm("Excluir aluno?"))return;
+    await fetch(API+"?action=apagar_aluno",{method:"POST",body:new FormData(Object.assign(document.createElement("form"),{cpf}))});
+    carregar();
+}
 
-        renderTable(filtered);
-    }
-
-    document.getElementById('filterNome').addEventListener('input', aplicarFiltros);
-    document.getElementById('btnFiltrar').addEventListener('click', aplicarFiltros);
-    
-    document.getElementById('btnLimparFiltro').addEventListener('click', ()=>{
-        document.getElementById('filterNome').value='';
-        document.getElementById('filterValor').value='';
-        document.getElementById('filterMeses').value='';
-        renderTable(alunosData);
+function acaoLote(tipo){
+    document.querySelectorAll("tbody input:checked").forEach(cb=>{
+        tipo=="pago"?pagar(cb.dataset.cpf):excluir(cb.dataset.cpf);
     });
+}
 
-    // EXCLUSÃO
-    document.addEventListener('click', async (e)=>{
-        const btn = e.target.closest('.btnApagar');
-        if(btn){
-            if(!confirm('Excluir este aluno?')) return;
-            await apagarAlunos([btn.dataset.cpf]);
-            carregarAlunos();
-        }
-    });
-
-    document.getElementById('btnApagarSelecionados').addEventListener('click', async ()=>{
-        const selecionados = Array.from(document.querySelectorAll('.selectAluno:checked')).map(chk=>chk.dataset.cpf);
-        if(selecionados.length===0) return alert('Selecione alguém.');
-        if(!confirm(`Excluir ${selecionados.length} alunos?`)) return;
-        await apagarAlunos(selecionados);
-        carregarAlunos();
-    });
-
-    async function apagarAlunos(cpfs){
-        for(const cpf of cpfs){
-            const fd = new FormData();
-            fd.append('cpf', cpf);
-            await fetch(`${API_URL}?action=apagar_aluno`, { method:'POST', body:fd });
-        }
-    }
-
-    document.getElementById('selectAll').addEventListener('change', (e)=>{
-        document.querySelectorAll('.selectAluno').forEach(chk=> chk.checked = e.target.checked);
-    });
+function toggleAll(e){
+    document.querySelectorAll("tbody input").forEach(c=>c.checked=e.checked);
+}
 </script>
 
 </body>
