@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="robots" content="noindex, nofollow">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <style>
         :root { --primary:#ff3b3b; --bg:#0a0a0a; --card:#161616; --border:rgba(255,255,255,.1); --text:#fff; }
         * { box-sizing:border-box; font-family: 'Montserrat', sans-serif; }
@@ -51,12 +52,14 @@
 
     <button onclick="fazerLogin()" id="btn-login">ENTRAR NO PAINEL</button>
     <div class="loader" id="loader"></div>
+    <div class="input-group" style="display: flex; justify-content: center; margin-top: 10px;">
+    <div class="g-recaptcha" data-sitekey="6LenVF0sAAAAAANqnK5vBT5uDJraFfODmi7V5qrK" data-theme="dark"></div>
+    </div>
     <p id="error-msg">Credenciais inválidas ou acesso negado.</p>
 </div>
 
 <script>
 const API = "https://apiphp-production-c674.up.railway.app/";
-
 async function fazerLogin() {
     const nome = document.getElementById("nome").value;
     const cpf = document.getElementById("cpf").value;
@@ -65,7 +68,17 @@ async function fazerLogin() {
     const loader = document.getElementById("loader");
     const error = document.getElementById("error-msg");
 
+    // Pega o token do captcha
+    const captchaToken = grecaptcha.getResponse();
+
     if(!nome || !cpf || !senha) return alert("Preencha todos os campos!");
+    
+    // BLOQUEIO LOCAL/BOT: Se não houver token, não prossegue
+    if(!captchaToken) {
+        error.innerText = "Por favor, prove que você não é um robô.";
+        error.style.display = "block";
+        return;
+    }
 
     error.style.display = "none";
     btn.style.display = "none";
@@ -75,6 +88,7 @@ async function fazerLogin() {
     fd.append('nome', nome);
     fd.append('cpf', cpf);
     fd.append('senha', senha);
+    fd.append('recaptcha_token', captchaToken); // Envia para o servidor validar
 
     try {
         const response = await fetch(API + "?action=login", { method: "POST", body: fd });
@@ -84,17 +98,18 @@ async function fazerLogin() {
             localStorage.setItem("bio_token", data.token);
             window.location.href = "admin.html";
         } else {
-            // Mensagem dinâmica baseada na segurança da API
-            error.innerText = data.message || "Acesso negado. O administrador foi notificado.";
+            error.innerText = data.message || "Credenciais inválidas.";
             error.style.display = "block";
             btn.style.display = "block";
             loader.style.display = "none";
+            grecaptcha.reset(); // Reseta o captcha em caso de erro
         }
     } catch (e) {
         loader.style.display = "none";
         btn.style.display = "block";
         error.style.display = "block";
-        error.innerText = "Erro de conexão com o servidor.";
+        error.innerText = "Erro de conexão.";
+        grecaptcha.reset();
     }
 }
 
