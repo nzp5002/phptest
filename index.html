@@ -14,176 +14,211 @@
             --primary-hover: #D62828;
             --bg: #0A0A0A;
             --card-bg: #121212;
-            --glass: rgba(22, 22, 22, 0.7);
+            --glass: rgba(10, 10, 10, 0.85);
             --border: rgba(255, 59, 59, 0.15);
             --text: #FFFFFF;
-            --transition: all 0.3s ease;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { margin:0; padding:0; box-sizing:border-box; outline: none; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
 
-        /* HEADER MODERNO */
+        /* LIMITADOR DE LARGURA GLOBAL */
+        .container { max-width: 1200px; margin: 0 auto; width: 90%; }
+
+        /* HEADER */
         header {
-            position: fixed; top:0; width:100%; z-index:1000;
-            padding: 15px 5%; background: var(--glass); backdrop-filter: blur(12px);
-            display:flex; justify-content: space-between; align-items: center;
+            position: fixed; top:0; width:100%; z-index: 1000;
+            padding: 15px 0; background: var(--glass); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
-        .logo { font-size:1.6rem; font-weight:900; text-transform: uppercase; color:white; text-decoration:none; letter-spacing: -1px; }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; color: white; text-decoration: none; }
         .logo span { color: var(--primary); }
         
-        .menu-icon { font-size:1.5rem; cursor:pointer; color: var(--text); transition: var(--transition); }
-        .menu-icon:hover { color: var(--primary); transform: scale(1.1); }
+        .menu-icon { font-size: 1.4rem; cursor: pointer; padding: 5px; }
 
-        /* NAV MENU */
-        .nav-menu {
-            position: fixed; top:0; right:-100%; width:100%; max-width:350px; height:100vh;
-            background: #000; display:flex; flex-direction:column; padding:100px 40px;
-            transition: 0.5s cubic-bezier(0.77,0.2,0.05,1.0); z-index:1050; border-left: 2px solid var(--primary);
+        /* MENU LATERAL ANDROID STYLE */
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); opacity: 0; visibility: hidden;
+            transition: var(--transition); z-index: 1040;
         }
-        .nav-menu.active { right:0; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
-        .nav-menu a { color:white; text-decoration:none; font-size:1.4rem; font-weight:700; margin-bottom:25px; transition: 0.3s; }
-        .nav-menu a:hover { color: var(--primary); padding-left: 10px; }
+        .nav-overlay.active { opacity: 1; visibility: visible; }
 
-        /* HERO SECTION */
+        .nav-menu {
+            position: fixed; top: 0; right: -280px; width: 280px; height: 100vh;
+            background: #111; z-index: 1050; transition: var(--transition);
+            display: flex; flex-direction: column; padding: 20px;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+        }
+        .nav-menu.active { right: 0; }
+
+        .menu-header { display: flex; justify-content: flex-end; margin-bottom: 40px; }
+        .close-menu { font-size: 1.8rem; color: var(--primary); cursor: pointer; }
+
+        .nav-menu a {
+            color: white; text-decoration: none; font-size: 1.1rem; font-weight: 600;
+            padding: 15px; margin-bottom: 10px; border-radius: 12px;
+            display: flex; align-items: center; gap: 15px; transition: 0.2s;
+        }
+        .nav-menu a i { width: 25px; color: var(--primary); font-size: 1.2rem; }
+        .nav-menu a:hover { background: rgba(255, 59, 59, 0.1); color: var(--primary); }
+
+        /* HERO */
         #home { 
             height: 100vh; display:flex; align-items:center; justify-content:center; text-align:center;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80');
-            background-size: cover; background-position: center; padding: 0 20px;
+            background: linear-gradient(rgba(0,0,0,0.6), var(--bg)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80');
+            background-size: cover; background-position: center;
         }
-        .hero-content h1 { font-size: clamp(2.5rem, 8vw, 5rem); font-weight:900; line-height: 1; margin-bottom: 20px; }
-        .hero-content h1 span { color: var(--primary); text-shadow: 0 0 20px var(--primary-glow); }
-        .hero-content p { font-size: 1.2rem; color: #ccc; margin-bottom: 30px; }
-        
-        .cta-button { 
-            display: inline-block; padding: 18px 40px; background: var(--primary); color: white; 
-            text-decoration: none; font-weight: 900; border-radius: 50px; transition: var(--transition);
-            box-shadow: 0 10px 20px rgba(255, 59, 59, 0.3);
-        }
-        .cta-button:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255, 59, 59, 0.5); background: var(--primary-hover); }
+        .hero-content h1 { font-size: clamp(2.2rem, 7vw, 4.5rem); font-weight: 900; margin-bottom: 15px; }
+        .hero-content h1 span { color: var(--primary); }
 
-        /* PLANOS */
-        .section-title { text-align:center; padding:100px 20px 50px; font-size:2.5rem; font-weight:900; }
+        /* SEÇÕES */
+        section { padding: 80px 0; }
+        .section-title { text-align: center; margin-bottom: 40px; font-size: 2.2rem; font-weight: 900; }
         .section-title span { color: var(--primary); }
 
-        .plans-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap:30px; padding:0 5%; max-width:1200px; margin:0 auto; }
+        /* CARDS */
+        .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
         .plan-card { 
-            background: var(--card-bg); border-radius:24px; padding:60px 40px; text-align:center; 
-            border: 1px solid var(--border); transition: var(--transition); position: relative; overflow: hidden;
+            background: var(--card-bg); border-radius: 20px; padding: 40px; text-align: center;
+            border: 1px solid var(--border); transition: var(--transition);
         }
-        .plan-card:hover { border-color: var(--primary); transform: translateY(-10px); }
-        .plan-card h3 { font-size: 1.5rem; margin-bottom: 20px; }
-        .plan-price { font-size:4rem; font-weight:900; color: var(--primary); margin-bottom: 10px; }
-        .plan-price span { font-size: 1.5rem; }
+        .plan-card:hover { transform: translateY(-8px); border-color: var(--primary); }
+        .plan-price { font-size: 3.5rem; font-weight: 900; color: var(--primary); }
 
-        /* FORMULÁRIO MATRÍCULA */
-        #matricula { padding:100px 5%; background: linear-gradient(to bottom, var(--bg), #0f0f0f); }
-        .form-container { max-width:500px; margin:0 auto; background: var(--card-bg); padding:40px; border-radius:30px; border: 1px solid var(--border); }
-        
-        .form-group { margin-bottom:20px; position:relative; }
-        .form-group i { position:absolute; left:18px; top:50%; transform: translateY(-50%); color: var(--primary); font-size: 1.1rem; }
-        
+        /* FORMULÁRIO */
+        .form-container { 
+            max-width: 500px; margin: 0 auto; background: var(--card-bg); 
+            padding: 35px; border-radius: 25px; border: 1px solid var(--border); 
+        }
+        .form-group { margin-bottom: 15px; position: relative; }
+        .form-group i { position: absolute; left: 18px; top: 18px; color: var(--primary); }
         input, select { 
-            width:100%; padding:18px 15px 18px 50px; background:#080808; border:1px solid #222; 
-            color:white; border-radius:14px; transition: var(--transition); font-size: 1rem;
+            width: 100%; padding: 16px 15px 16px 50px; background: #080808; 
+            border: 1px solid #222; color: white; border-radius: 12px; font-size: 1rem;
         }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(255, 59, 59, 0.1); }
-
-        .captcha-box { margin: 25px 0; display: flex; justify-content: center; }
 
         .btn-submit { 
-            width:100%; padding:20px; background: var(--primary); border:none; color:white; 
-            font-weight:900; text-transform:uppercase; border-radius:14px; cursor:pointer; 
-            transition: var(--transition); font-size: 1rem; letter-spacing: 1px;
+            width: 100%; padding: 18px; background: var(--primary); border: none; 
+            color: white; font-weight: 900; border-radius: 12px; cursor: pointer; transition: 0.3s;
         }
-        .btn-submit:hover:not(:disabled) { background: var(--primary-hover); }
-        .btn-submit:disabled { background: #444; cursor: not-allowed; opacity: 0.7; }
+        .btn-submit:disabled { background: #333; opacity: 0.6; }
 
-        #status { text-align: center; margin-bottom: 20px; padding: 15px; border-radius: 10px; display: none; font-weight: 700; }
+        #status { text-align: center; margin-bottom: 15px; font-weight: 700; display: none; padding: 10px; border-radius: 8px; }
 
-        footer { padding: 50px 20px; border-top: 1px solid var(--border); text-align: center; color: #555; font-size: 0.9rem; }
-
-        /* REVEAL ANIMATION */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border); color: #444; }
     </style>
 </head>
 <body>
 
 <header>
-    <a href="#" class="logo">Bio<span>Athletic</span></a>
-    <div class="menu-icon" id="menuBtn"><i class="fas fa-bars"></i></div>
+    <div class="container">
+        <a href="#" class="logo">Bio<span>Athletic</span></a>
+        <div class="menu-icon" id="openMenu"><i class="fas fa-bars-staggered"></i></div>
+    </div>
 </header>
 
+<div class="nav-overlay" id="overlay"></div>
+
 <nav class="nav-menu" id="navMenu">
-    <a href="#home">Início</a>
-    <a href="#planos">Planos</a>
-    <a href="#matricula">Matricular-se</a>
-    <a href="admin.html" style="color: var(--primary)">Painel Admin</a>
+    <div class="menu-header">
+        <i class="fas fa-xmark close-menu" id="closeMenu"></i>
+    </div>
+    <a href="#home"><i class="fas fa-house"></i> Início</a>
+    <a href="#planos"><i class="fas fa-dumbbell"></i> Planos</a>
+    <a href="#matricula"><i class="fas fa-user-plus"></i> Matricular-se</a>
+    <hr style="border: 0; border-top: 1px solid #222; margin: 10px 0;">
+    <a href="login.html"><i class="fas fa-lock"></i> Área Admin</a>
 </nav>
 
 <section id="home">
-    <div class="hero-content">
+    <div class="container hero-content">
         <h1>TREINE NO <span>LIMITE</span></h1>
-        <p>Alta performance para quem busca resultados reais.</p>
-        <a href="#matricula" class="cta-button">COMEÇAR AGORA</a>
+        <p>A melhor infraestrutura para seus resultados.</p>
+        <br>
+        <a href="#matricula" style="display:inline-block; padding: 15px 30px; background: var(--primary); color:white; text-decoration:none; border-radius:50px; font-weight:900;">COMEÇAR AGORA</a>
     </div>
 </section>
 
-<div class="reveal">
-    <h2 class="section-title" id="planos">Nossos <span>Planos</span></h2>
-    <div class="plans-grid">
-        <div class="plan-card">
-            <h3>MATRÍCULA BIO PRO</h3>
-            <div class="plan-price">R$ 60<span>,00</span></div>
-            <p style="color: #888;">Acesso total à unidade • Sem fidelidade</p>
+<section id="planos">
+    <div class="container">
+        <h2 class="section-title">Nossos <span>Planos</span></h2>
+        <div class="plans-grid">
+            <div class="plan-card">
+                <h3>PLANO MENSAL</h3>
+                <div class="plan-price">R$ 60<span>,00</span></div>
+                <p>Acesso Total • Sem Multas</p>
+            </div>
         </div>
     </div>
-</div>
+</section>
 
-<section id="matricula" class="reveal">
-    <div class="form-container">
-        <h2 style="text-align:center; margin-bottom:30px; font-weight: 900;">SUA MATRÍCULA</h2>
-        <div id="status"></div>
-        <form id="formMatricula">
-            <div class="form-group">
-                <i class="fas fa-user"></i>
-                <input type="text" id="nome" placeholder="Nome Completo" required>
-            </div>
-            <div class="form-group">
-                <i class="fas fa-id-card"></i>
-                <input type="text" id="cpf" placeholder="CPF (000.000.000-00)" maxlength="14" required>
-            </div>
-            <div class="form-group">
-                <i class="fas fa-phone"></i>
-                <input type="tel" id="telefone" placeholder="WhatsApp" maxlength="15" required>
-            </div>
-            <div class="form-group">
-                <i class="fas fa-calendar-alt"></i>
-                <select id="plano" required>
-                    <option value="1">Mensal (R$ 60,00)</option>                 
-                </select>
-            </div>
+<section id="matricula">
+    <div class="container">
+        <div class="form-container">
+            <h2 style="text-align:center; margin-bottom:25px; font-weight:900;">MATRÍCULA</h2>
+            <div id="status"></div>
+            <form id="formMatricula">
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="nome" placeholder="Nome Completo" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-id-card"></i>
+                    <input type="text" id="cpf" placeholder="CPF" maxlength="14" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="telefone" placeholder="WhatsApp" maxlength="15" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-calendar-check"></i>
+                    <select id="plano" required>
+                        <option value="1">Mensal (R$ 60,00)</option>                 
+                    </select>
+                </div>
 
-            <div class="captcha-box">
-                <div class="g-recaptcha" data-sitekey="6LenVF0sAAAAAANqnK5vBT5uDJraFfODmi7V5qrK" data-theme="dark"></div>
-            </div>
+                <div style="display:flex; justify-content:center; margin: 20px 0;">
+                    <div class="g-recaptcha" data-sitekey="6LenVF0sAAAAAANqnK5vBT5uDJraFfODmi7V5qrK" data-theme="dark"></div>
+                </div>
 
-            <button type="submit" class="btn-submit" id="btnSubmit">FINALIZAR AGORA</button>
-        </form>
+                <button type="submit" class="btn-submit" id="btnSubmit">FINALIZAR AGORA</button>
+            </form>
+        </div>
     </div>
 </section>
 
 <footer>
-    &copy; 2024 BioAthletic Performance Hub. Todos os direitos reservados.
+    <p>&copy; 2024 BioAthletic Performance</p>
 </footer>
 
 <script>
+// LÓGICA DO MENU (ANDROID DRAWER)
+const openBtn = document.getElementById('openMenu');
+const closeBtn = document.getElementById('closeMenu');
+const nav = document.getElementById('navMenu');
+const overlay = document.getElementById('overlay');
+
+const toggleMenu = () => {
+    nav.classList.toggle('active');
+    overlay.classList.toggle('active');
+};
+
+openBtn.onclick = toggleMenu;
+closeBtn.onclick = toggleMenu;
+overlay.onclick = toggleMenu; // Fecha ao clicar fora do menu
+
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.onclick = toggleMenu;
+});
+
+// ENVIO E MÁSCARAS (Mantendo sua lógica funcional)
 const API_URL = 'https://apiphp-production-c674.up.railway.app/';
 
-// Máscaras de Input (Melhoradas)
 const mask = {
     cpf(i) {
         i.value = i.value.replace(/\D/g, '').replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
@@ -195,7 +230,6 @@ const mask = {
 document.getElementById('cpf').oninput = e => mask.cpf(e.target);
 document.getElementById('telefone').oninput = e => mask.tel(e.target);
 
-// Envio de Formulário com UX de Loading
 document.getElementById('formMatricula').onsubmit = async function(e) {
     e.preventDefault();
     const btn = document.getElementById('btnSubmit');
@@ -206,14 +240,12 @@ document.getElementById('formMatricula').onsubmit = async function(e) {
         status.style.display = 'block';
         status.style.background = 'rgba(255, 59, 59, 0.1)';
         status.style.color = '#FF3B3B';
-        status.innerText = "⚠️ Confirme que você não é um robô.";
+        status.innerText = "⚠️ Confirme o Captcha.";
         return;
     }
 
-    // Estado de Loading
     btn.disabled = true;
-    btn.innerText = "PROCESSANDO...";
-    status.style.display = 'none';
+    btn.innerText = "ENVIANDO...";
 
     const fd = new FormData();
     fd.append('nome', document.getElementById('nome').value);
@@ -226,47 +258,27 @@ document.getElementById('formMatricula').onsubmit = async function(e) {
         const response = await fetch(`${API_URL}?action=cadastrar_aluno`, { method: 'POST', body: fd });
         const res = await response.json();
 
+        status.style.display = 'block';
         if (res.success) {
-            status.style.display = 'block';
             status.style.background = 'rgba(40, 167, 69, 0.1)';
             status.style.color = '#28a745';
-            status.innerText = "🚀 MATRÍCULA REALIZADA COM SUCESSO!";
+            status.innerText = "✅ MATRÍCULA SUCESSO!";
             this.reset();
             grecaptcha.reset();
         } else {
-            throw new Error(res.message || "Erro no servidor");
+            throw new Error(res.message);
         }
     } catch (err) {
         status.style.display = 'block';
         status.style.background = 'rgba(255, 59, 59, 0.1)';
         status.style.color = '#FF3B3B';
-        status.innerText = "❌ " + err.message;
+        status.innerText = "❌ Erro ao enviar.";
     } finally {
         btn.disabled = false;
         btn.innerText = "FINALIZAR AGORA";
     }
 };
-
-// Menu Mobile Bug Fix (Fecha ao clicar no link)
-const menuBtn = document.getElementById('menuBtn');
-const navMenu = document.getElementById('navMenu');
-menuBtn.onclick = () => navMenu.classList.toggle('active');
-document.querySelectorAll('.nav-menu a').forEach(link => {
-    link.onclick = () => navMenu.classList.remove('active');
-});
-
-// Scroll Reveal Animation
-function reveal() {
-    let reveals = document.querySelectorAll(".reveal");
-    reveals.forEach(r => {
-        let windowHeight = window.innerHeight;
-        let revealTop = r.getBoundingClientRect().top;
-        if (revealTop < windowHeight - 100) r.classList.add("active");
-    });
-}
-window.addEventListener("scroll", reveal);
-reveal(); // Iniciar no load
 </script>
 
 </body>
-</html>
+    </html>
