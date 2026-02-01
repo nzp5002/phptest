@@ -7,7 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://www.google.com/recaptcha/api.js?render=6LenVF0sAAAAAANqnK5vBT5uDJraFfODmi7V5qrK"></script>  
+    
+    <script src="https://www.google.com/recaptcha/api.js?render=6LenVF0sAAAAAANqnK5vBT5uDJraFfODmi7V5qrK" defer></script>  
+    
     <style>
         :root {
             --primary: #FF3B3B;
@@ -280,6 +282,7 @@
         <p class="copyright">&copy; 2026 BioAthletic. Todos os direitos reservados.</p>
     </div>
 </footer>
+
 <script>
 // CONFIGURAÇÕES GERAIS
 const API_URL = 'https://apiphp-production-c674.up.railway.app/';
@@ -322,6 +325,12 @@ function calcularDataVencimento(meses) {
 document.getElementById('formMatricula').addEventListener('submit', function(e) {
     e.preventDefault();
 
+    // CORREÇÃO 2: Verificação de existência do grecaptcha para evitar o erro "not defined"
+    if (typeof grecaptcha === 'undefined') {
+        alert("O sistema de segurança está carregando. Tente novamente em 2 segundos.");
+        return;
+    }
+
     const status = document.getElementById('status');
     const meses = document.getElementById('plano').value;
     const dataVencimento = calcularDataVencimento(meses);
@@ -330,42 +339,43 @@ document.getElementById('formMatricula').addEventListener('submit', function(e) 
     status.style.color = '#FF3B3B';
     status.innerText = "Validando segurança...";
 
-    // Aciona o reCAPTCHA
     grecaptcha.ready(function() {
-        grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' }).then(async function(token) {
-            
-            const fd = new FormData();
-            fd.append('nome', document.getElementById('nome').value);
-            fd.append('cpf', document.getElementById('cpf').value.replace(/\D/g, ''));
-            fd.append('telefone', document.getElementById('telefone').value.replace(/\D/g, ''));
-            fd.append('meses_permanencia', meses);
-            fd.append('data_vencimento', dataVencimento);
-            fd.append('recaptcha_token', token); // <--- O TOKEN VAI AQUI
+        try {
+            grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' }).then(async function(token) {
+                
+                const fd = new FormData();
+                fd.append('nome', document.getElementById('nome').value);
+                fd.append('cpf', document.getElementById('cpf').value.replace(/\D/g, ''));
+                fd.append('telefone', document.getElementById('telefone').value.replace(/\D/g, ''));
+                fd.append('meses_permanencia', meses);
+                fd.append('data_vencimento', dataVencimento);
+                fd.append('recaptcha_token', token);
 
-            try {
-                const response = await fetch(`${API_URL}?action=cadastrar_aluno`, {
-                    method: 'POST',
-                    body: fd
-                });
+                try {
+                    const response = await fetch(`${API_URL}?action=cadastrar_aluno`, {
+                        method: 'POST',
+                        body: fd
+                    });
 
-                const res = await response.json();
+                    const res = await response.json();
 
-                if (res.success === true || res.status === 'success') {
-                    status.innerText = `✅ SUCESSO! Vencimento em ${dataVencimento}`;
-                    status.style.color = '#28a745';
-                    document.getElementById('formMatricula').reset();
-                } else if (res.message && /cadastrado/i.test(res.message)) {
-                    status.innerText = `⚠️ Aluno já cadastrado. Vencimento em ${dataVencimento}`;
-                    status.style.color = '#FFC107';
-                } else {
-                    status.innerText = '❌ ' + (res.message || 'Erro ao cadastrar.');
+                    if (res.success === true || res.status === 'success') {
+                        status.innerText = `✅ SUCESSO! Vencimento em ${dataVencimento}`;
+                        status.style.color = '#28a745';
+                        document.getElementById('formMatricula').reset();
+                    } else {
+                        status.innerText = '❌ ' + (res.message || 'Erro ao cadastrar.');
+                        status.style.color = '#FF3B3B';
+                    }
+                } catch (err) {
+                    status.innerText = '❌ Erro de conexão com o servidor.';
                     status.style.color = '#FF3B3B';
                 }
-            } catch (err) {
-                status.innerText = '❌ Servidor offline ou erro de conexão.';
-                status.style.color = '#FF3B3B';
-            }
-        });
+            });
+        } catch (error) {
+            console.error("Erro no reCAPTCHA:", error);
+            status.innerText = "❌ Falha crítica de segurança.";
+        }
     });
 });
 
@@ -378,7 +388,5 @@ const observer = new IntersectionObserver(entries => {
 
 document.querySelectorAll('.plan-card').forEach(card => observer.observe(card));
 </script>
-
-
 </body>
 </html>
