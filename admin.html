@@ -171,12 +171,39 @@ let DADOS=[];
 const token=localStorage.getItem("bio_token");
 if(!token) location.href="login.html";
 
-async function carregar(){
-const r=await fetch(API+"?action=listar_alunos",{headers:{Authorization:token}});
-const j=await r.json();
-DADOS=j.data||[];
-render(DADOS);
+async function carregar() {
+    try {
+        const r = await fetch(API + "?action=listar_alunos", {
+            method: "GET", // Listagem geralmente é GET
+            headers: { 
+                "Authorization": "Bearer " + token, // Padrão de segurança
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (r.status === 401 || r.status === 403) {
+            alert("Sessão expirada. Faça login novamente.");
+            localStorage.removeItem("bio_token");
+            location.href = "login.html";
+            return;
+        }
+
+        const j = await r.json();
+        
+        // Verifica se a API retornou sucesso e dados
+        if (j.status === "success" || j.data) {
+            DADOS = j.data || [];
+            render(DADOS);
+        } else {
+            console.error("Erro na API:", j.message);
+            document.getElementById("stats").innerText = "Erro ao carregar dados.";
+        }
+    } catch (e) {
+        console.error("Erro de conexão:", e);
+        document.getElementById("stats").innerText = "Servidor Offline.";
+    }
 }
+
 
 function render(lista){
 const tb=document.getElementById("lista");
