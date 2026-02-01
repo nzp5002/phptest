@@ -310,7 +310,6 @@
     </div>
 </footer>
 
-<!-- SCRIPTS (LÓGICA PRESERVADA) -->
 <script>
 // MENU MOBILE
 const menuBtn = document.getElementById('menuBtn');
@@ -326,9 +325,7 @@ function toggleMenu() {
 
 menuBtn.addEventListener('click', toggleMenu);
 menuOverlay.addEventListener('click', toggleMenu);
-navLinks.forEach(link => {
-    link.addEventListener('click', toggleMenu);
-});
+navLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
 // MÁSCARAS
 document.getElementById('cpf').addEventListener('input', e=>{
@@ -340,23 +337,23 @@ document.getElementById('telefone').addEventListener('input', e=>{
     e.target.value = !x[2]? x[1]: '('+x[1]+') '+x[2]+(x[3]?'-'+x[3]:'');
 });
 
-// LÓGICA DE PERMANÊNCIA (BISSEXTO)
+// DATA DE VENCIMENTO
 function calcularDataVencimento(meses) {
     const hoje = new Date();
-    // O JavaScript lida nativamente com bissextos ao usar setMonth
     hoje.setMonth(hoje.getMonth() + parseInt(meses));
     return hoje.toLocaleDateString('pt-BR');
 }
 
-// ENVIO DO FORMULÁRIO
+// ENVIO DO FORMULÁRIO (CORRIGIDO)
 const API_URL = 'https://apiphp-production-c674.up.railway.app/';
 
 document.getElementById('formMatricula').addEventListener('submit', async e=>{
     e.preventDefault();
+
     const status = document.getElementById('status');
     const meses = document.getElementById('plano').value;
     const dataVencimento = calcularDataVencimento(meses);
-    
+
     status.style.display = 'block';
     status.style.color = '#FF3B3B';
     status.innerText = `Calculando vigência (Vence em: ${dataVencimento})...`;
@@ -375,22 +372,35 @@ document.getElementById('formMatricula').addEventListener('submit', async e=>{
         });
 
         const res = await response.json();
-        if(res.status){
+
+        // ✔️ TRATAMENTO ROBUSTO
+        if (res.status === true || res.status === 'true' || res.status === 1) {
             status.innerText = `✅ SUCESSO! Vencimento em ${dataVencimento}`;
             status.style.color = '#28a745';
             document.getElementById('formMatricula').reset();
+
+        } else if (res.message && res.message.toLowerCase().includes('cadastrado')) {
+            status.innerText = `⚠️ Aluno já cadastrado. Vencimento em ${dataVencimento}`;
+            status.style.color = '#FFC107';
+
         } else {
             status.innerText = '❌ ' + (res.message || 'Erro ao cadastrar.');
+            status.style.color = '#FF3B3B';
         }
-    } catch(err){
-        status.innerText = '❌ Servidor offline. Tente novamente.';
+
+    } catch (err) {
+        status.innerText = '❌ Servidor offline ou erro de conexão.';
+        status.style.color = '#FF3B3B';
     }
 });
 
-// ANIMAÇÃO DE CARDS
+// ANIMAÇÃO DOS CARDS
 const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('show'); });
+    entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.add('show');
+    });
 }, {threshold: 0.2});
+
 document.querySelectorAll('.plan-card').forEach(card => observer.observe(card));
 </script>
 
