@@ -215,24 +215,29 @@ function mostrarTabela(){tabelaBox.style.display="block";cardsBox.style.display=
 function mostrarCards(){tabelaBox.style.display="none";cardsBox.style.display="block";treeBox.style.display="none";}
 function mostrarTree(){tabelaBox.style.display="none";cardsBox.style.display="none";treeBox.style.display="block";}
 
-function render(lista){
-listaBox=lista.map(a=>`
-<tr>
-<td><input type="checkbox" class="aluno-check" data-cpf="${a.cpf}"></td>
-<td><b>${a.nome}</b></td>
-<td>${a.cpf}</td>
-<td>R$ ${Number(a.mensalidade_base).toFixed(2)}</td>
-<td><span class="status ${a.status}">${a.status}</span></td>
-<td>R$ ${Number(a.valor_total_devido).toFixed(2)}</td>
-<td>
-<button class="circle pay" onclick="pagar('${a.cpf}')"><i class="fas fa-dollar-sign"></i></button>
-<button class="circle fine" onclick="multar('${a.cpf}')"><i class="fas fa-exclamation-triangle"></i></button>
-<button class="circle del" onclick="excluir('${a.cpf}')"><i class="fas fa-trash"></i></button>
-</td>
-</tr>`).join("");
-lista.innerHTML=listaBox;
-stats.innerText=lista.length+" ALUNOS";
-}
+function render(dados){
+    const tbody = document.getElementById("lista");
+    tbody.innerHTML = "";
+
+    dados.forEach(a => {
+        tbody.innerHTML += `
+        <tr>
+            <td><input type="checkbox" class="aluno-check" data-cpf="${a.cpf}"></td>
+            <td><b>${a.nome}</b></td>
+            <td>${a.cpf}</td>
+            <td>R$ ${Number(a.mensalidade_base).toFixed(2)}</td>
+            <td><span class="status ${a.status}">${a.status}</span></td>
+            <td>R$ ${Number(a.valor_total_devido).toFixed(2)}</td>
+            <td>
+                <button class="circle pay" onclick="pagar('${a.cpf}')"><i class="fas fa-dollar-sign"></i></button>
+                <button class="circle fine" onclick="multar('${a.cpf}')"><i class="fas fa-exclamation-triangle"></i></button>
+                <button class="circle del" onclick="excluir('${a.cpf}')"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>`;
+    });
+
+    document.getElementById("stats").innerText = dados.length + " ALUNOS";
+  
 
 function renderCards(lista){
 cards.innerHTML=lista.map(a=>`
